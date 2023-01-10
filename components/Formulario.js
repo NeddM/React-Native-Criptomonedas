@@ -1,12 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableHighlight, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 
-const Formulario = () => {
-  const [moneda, setMoneda] = useState('');
-  const [criptomoneda, setCriptomoneda] = useState('');
+const Formulario = ({
+  moneda,
+  setMoneda,
+  criptomoneda,
+  setCriptomoneda,
+  setConsultarAPI,
+}) => {
   const [criptomonedas, setCriptomonedas] = useState([]);
+
+  const analizarPrecio = () => {
+    if (moneda === '' || criptomoneda === '') {
+      mostrarAlerta();
+      return;
+    }
+
+    setConsultarAPI(true);
+  };
+
+  const mostrarAlerta = () => {
+    Alert.alert('Error', 'Ambos campos son obligatorios');
+  };
 
   useEffect(() => {
     const consultarAPI = async () => {
@@ -27,9 +44,8 @@ const Formulario = () => {
         onValueChange={setMoneda}
         itemStyle={{height: 120}}>
         <Picker.Item label="- Seleccionar -" value={''} />
-        <Picker.Item label="Dolar de EEUU" value={'USD'} />
-        <Picker.Item label="Peso Mexicano" value={'MXN'} />
         <Picker.Item label="Euro" value={'EUR'} />
+        <Picker.Item label="Dolar de EEUU" value={'USD'} />
         <Picker.Item label="Libra Esterlina" value={'GBP'} />
       </Picker>
 
@@ -47,6 +63,11 @@ const Formulario = () => {
           />
         ))}
       </Picker>
+      <TouchableHighlight
+        onPress={() => analizarPrecio()}
+        style={styles.botonAnalizar}>
+        <Text style={styles.textoAnalizar}>Analizar</Text>
+      </TouchableHighlight>
     </View>
   );
 };
@@ -58,6 +79,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 22,
     marginVertical: 20,
+  },
+  botonAnalizar: {
+    backgroundColor: '#5e49e2',
+    padding: 10,
+    marginTop: 20,
+  },
+  textoAnalizar: {
+    color: '#fff',
+    fontSize: 18,
+    fontFamily: 'Lato-Black',
+    textTransform: 'uppercase',
+    textAlign: 'center',
   },
 });
 
