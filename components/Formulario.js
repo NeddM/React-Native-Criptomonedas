@@ -25,7 +25,7 @@ const Formulario = () => {
       <Picker
         selectedValue={moneda}
         onValueChange={setMoneda}
-        itemStyle={{height: 100}}>
+        itemStyle={{height: 120}}>
         <Picker.Item label="- Seleccionar -" value={''} />
         <Picker.Item label="Dolar de EEUU" value={'USD'} />
         <Picker.Item label="Peso Mexicano" value={'MXN'} />
